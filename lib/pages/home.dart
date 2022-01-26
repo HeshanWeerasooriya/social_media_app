@@ -16,39 +16,69 @@ class _HomeState extends State<Home> {
   Scaffold buildUnAuthScreen() {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [Colors.teal, Colors.purple],
+            colors: [
+              Theme.of(context).accentColor,
+              Theme.of(context).primaryColor,
+            ],
           ),
         ),
         alignment: Alignment.center,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Fluttergram',
-              style: TextStyle(
-                fontFamily: "Pacifico",
-                fontSize: 70.0,
-                color: Colors.white,
+            Expanded(
+              flex: 3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 100.0,
+                    height: 100.0,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/camera.png',
+                        ),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    'Fluttergram',
+                    style: TextStyle(
+                      fontFamily: "Pacifico",
+                      fontSize: 70.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
-            GestureDetector(
-              onTap: () => print('tapped'),
-              child: Container(
-                width: 260.0,
-                height: 60.0,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/images/google_signin.png',
+            Expanded(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => print('tapped'),
+                    child: Container(
+                      width: 260.0,
+                      height: 60.0,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/google_signin.png',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    fit: BoxFit.cover,
                   ),
-                ),
+                ],
               ),
             )
           ],
