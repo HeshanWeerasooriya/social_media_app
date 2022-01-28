@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/widgets/progress.dart';
 import '../widgets/header.dart';
 
 class Timeline extends StatelessWidget {
@@ -7,9 +8,8 @@ class Timeline extends StatelessWidget {
   @override
   Widget build(context) {
     return Scaffold(
-      appBar: header(context, isAppTitle: true, titleText: ''),
-      body: Text("Timeline"),
-    );
+        appBar: header(context, isAppTitle: true, titleText: ''),
+        body: linearProgress());
   }
 }
 
