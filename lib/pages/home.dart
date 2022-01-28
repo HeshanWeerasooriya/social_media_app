@@ -74,8 +74,10 @@ class _HomeState extends State<Home> {
   }
 
   onTap(int pageIndex) {
-    pageController.jumpToPage(
+    pageController.animateToPage(
       pageIndex,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 
@@ -91,7 +93,7 @@ class _HomeState extends State<Home> {
         ],
         controller: pageController,
         onPageChanged: onPageChanged,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: CupertinoTabBar(
           currentIndex: pageIndex,
