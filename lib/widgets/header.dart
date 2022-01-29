@@ -17,6 +17,6 @@ AppBar header(
       ),
     ),
     centerTitle: true,
-    backgroundColor: Color.fromRGBO(38, 38, 38, 1),
+    backgroundColor: Theme.of(context).colorScheme.secondary,
   );
 }

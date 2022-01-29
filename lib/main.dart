@@ -17,9 +17,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fluttergram',
-      theme: ThemeData.dark().copyWith(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: mobileBackgroundColor),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+        ).copyWith(
+          secondary: Colors.green,
+        ),
+        // primaryColor: Color(0xFF833AB4),
+        // colorScheme:
+        //     ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFE1306C)),
+      ),
       home: Home(),
     );
   }
