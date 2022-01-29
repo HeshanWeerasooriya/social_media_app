@@ -51,7 +51,7 @@ class _SearchState extends State<Search> {
   Container buildNoContent() {
     final Orientation orientation = MediaQuery.of(context).orientation;
     return Container(
-      color: Colors.white,
+      color: Color.fromARGB(0, 0, 0, 500),
       child: Center(
         child: ListView(
           shrinkWrap: true,
@@ -90,7 +90,7 @@ class _SearchState extends State<Search> {
           searchResults.add(searchResult);
         });
         return Container(
-          color: Colors.white,
+          color: Color.fromARGB(0, 0, 0, 200),
           child: ListView(
             children: searchResults,
           ),

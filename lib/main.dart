@@ -19,9 +19,10 @@ class MyApp extends StatelessWidget {
       title: 'Fluttergram',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
+          brightness: Brightness.dark,
           primarySwatch: Colors.blue,
         ).copyWith(
-          secondary: Colors.green,
+          secondary: Colors.grey[800],
         ),
         // primaryColor: Color(0xFF833AB4),
         // colorScheme:
