@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-AppBar header(context, {bool isAppTitle = false, required String titleText}) {
+AppBar header(
+  context, {
+  bool isAppTitle = false,
+  required String titleText,
+  removeBackButton = false,
+}) {
   return AppBar(
+    automaticallyImplyLeading: removeBackButton ? false : true,
     title: Text(
       isAppTitle ? "Fluttergram" : titleText,
       style: TextStyle(
