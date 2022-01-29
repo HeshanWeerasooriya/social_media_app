@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../widgets/header.dart';
 
 class Profile extends StatelessWidget {
@@ -8,8 +7,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, titleText: "Profile"),
-      body: Text("Profile"),
-    );
+        appBar: header(context, titleText: "Profile"),
+        body: ElevatedButton(onPressed: () {}, child: Text('OOOOOOOOOOO')));
   }
 }

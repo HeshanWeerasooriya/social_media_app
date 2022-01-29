@@ -124,9 +124,9 @@ class _HomeState extends State<Home> {
             child: Text('Logout'),
             onPressed: logout,
           ),
-          ActivityFeed(),
-          Upload(),
           Search(),
+          Upload(),
+          ActivityFeed(),
           Profile(),
         ],
         controller: pageController,
@@ -167,16 +167,7 @@ class _HomeState extends State<Home> {
   Scaffold buildUnAuthScreen() {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Theme.of(context).accentColor,
-              Theme.of(context).primaryColor,
-            ],
-          ),
-        ),
+        decoration: BoxDecoration(),
         alignment: Alignment.center,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

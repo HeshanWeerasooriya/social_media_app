@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/pages/home.dart';
+import 'package:social_media_app/utils/colors.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,19 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fluttergram',
-      theme: ThemeData(
-        primaryColor: Color(0xFFE1306C),
-        colorScheme:
-            ColorScheme.fromSwatch().copyWith(secondary: Color(0xFF833AB4)),
-      ),
+      theme: ThemeData.dark().copyWith(
+          primaryColor: Colors.white,
+          scaffoldBackgroundColor: mobileBackgroundColor),
       home: Home(),
     );
-
-    //     Theme(
-    // data: ThemeData.from(
-    //   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.amber),
-    // ),
-
-    //  );
   }
 }
