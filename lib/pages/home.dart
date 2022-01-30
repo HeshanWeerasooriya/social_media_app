@@ -13,7 +13,8 @@ import 'upload.dart';
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final usersRef = FirebaseFirestore.instance.collection('users');
 final DateTime timestamp = DateTime.now();
-late User currentUser;
+
+User? currentUser;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -84,7 +85,7 @@ class _HomeState extends State<Home> {
 
     currentUser = User.fromDocument(doc);
     print(currentUser);
-    print(currentUser.username);
+    print(currentUser!.username);
   }
 
   @override
@@ -125,7 +126,9 @@ class _HomeState extends State<Home> {
             onPressed: logout,
           ),
           Search(),
-          Upload(),
+          Upload(
+            currentUser: currentUser!,
+          ),
           ActivityFeed(),
           Profile(),
         ],
