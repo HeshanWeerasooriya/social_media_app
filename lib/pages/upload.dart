@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../model/user.dart';
 
 class Upload extends StatefulWidget {
-  final User currentUser;
+  final User? currentUser;
   const Upload({Key? key, required this.currentUser}) : super(key: key);
 
   @override
@@ -142,7 +142,7 @@ class _UploadState extends State<Upload> {
           ListTile(
             leading: CircleAvatar(
               backgroundImage:
-                  CachedNetworkImageProvider(widget.currentUser.photoUrl),
+                  CachedNetworkImageProvider(widget.currentUser!.photoUrl),
             ),
             title: Container(
               width: 250.0,

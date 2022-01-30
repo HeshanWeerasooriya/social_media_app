@@ -84,8 +84,8 @@ class _HomeState extends State<Home> {
     }
 
     currentUser = User.fromDocument(doc);
-    print(currentUser);
-    print(currentUser!.username);
+    //print(currentUser);
+    // print(currentUser!.username);
   }
 
   @override
@@ -127,7 +127,7 @@ class _HomeState extends State<Home> {
           ),
           Search(),
           Upload(
-            currentUser: currentUser!,
+            currentUser: currentUser,
           ),
           ActivityFeed(),
           Profile(),
