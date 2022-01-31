@@ -13,7 +13,7 @@ Container linearProgress() {
   return Container(
     padding: const EdgeInsets.only(bottom: 10.0),
     child: const LinearProgressIndicator(
-      valueColor: const AlwaysStoppedAnimation(Colors.purple),
+      valueColor: AlwaysStoppedAnimation(Colors.red),
     ),
   );
 }

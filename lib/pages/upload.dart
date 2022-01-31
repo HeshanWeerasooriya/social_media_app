@@ -1,8 +1,16 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+//import 'package:image/image.dart' as Im;
+//import 'package:image/image.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
+import 'package:social_media_app/pages/home.dart';
 import '../model/user.dart';
+import '../widgets/progress.dart';
 
 class Upload extends StatefulWidget {
   final User? currentUser;
@@ -15,6 +23,10 @@ class Upload extends StatefulWidget {
 class _UploadState extends State<Upload> {
   XFile? file;
   final ImagePicker _picker = ImagePicker();
+  TextEditingController captionController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  bool isUploading = true;
+  String postId = const Uuid().v4();
 
   handleTakePhoto() async {
     Navigator.pop(context);
@@ -75,7 +87,7 @@ class _UploadState extends State<Upload> {
                 ),
                 child: const Text(
                   "Upload Image",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
                     fontSize: 22.0,
                   ),
@@ -94,6 +106,65 @@ class _UploadState extends State<Upload> {
     });
   }
 
+  // compressImage() async {
+  //   final tempDir = await getTemporaryDirectory();
+  //   final path = tempDir.path;
+  //   Im.Image imageFile = Im.decodeImage(file.readAsBytesSync());
+  //   final compressedImageFile = File('$path/img_$postId.jpg')
+  //     ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
+  //   setState(() {
+  //     file = compressedImageFile;
+  //   });
+  // }
+
+  Future<String> uploadImage(imageFile) async {
+    final ref = FirebaseStorage.instance.ref('post_$postId.jpg');
+    await ref.putFile(File(imageFile!.path));
+    final url = await ref.getDownloadURL();
+    return url;
+  }
+
+  createPostInFirestore({
+    String? mediaUrl,
+    String? location,
+    String? description,
+  }) {
+    postsRef
+        .doc(widget.currentUser!.id)
+        .collection("userPosts")
+        .doc(postId)
+        .set({
+      "postId": postId,
+      "ownerId": widget.currentUser!.id,
+      "username": widget.currentUser!.username,
+      "mediaUrl": mediaUrl,
+      "description": description,
+      "location": location,
+      "timestamp": timestamp,
+      "likes": {},
+    });
+  }
+
+  handleSubmit() async {
+    setState(() {
+      isUploading = true;
+    });
+    //await compressImage();
+    String mediaUrl = await uploadImage(file);
+    createPostInFirestore(
+      mediaUrl: mediaUrl,
+      location: locationController.text,
+      description: captionController.text,
+    );
+    captionController.clear();
+    locationController.clear();
+    setState(() {
+      file = null;
+      isUploading = false;
+      postId = const Uuid().v4();
+    });
+  }
+
   Scaffold buildUploadForm() {
     return Scaffold(
       appBar: AppBar(
@@ -107,10 +178,10 @@ class _UploadState extends State<Upload> {
         ),
         actions: [
           TextButton(
-            onPressed: () => print('pressed'),
+            onPressed: isUploading ? null : () => handleSubmit(),
             child: const Text(
               "Post",
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.blueAccent,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0,
@@ -121,9 +192,7 @@ class _UploadState extends State<Upload> {
       ),
       body: ListView(
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.only(top: 20.0),
-          ),
+          isUploading ? linearProgress() : const Text(""),
           SizedBox(
             height: 220.0,
             width: MediaQuery.of(context).size.width * 0.8,
@@ -144,10 +213,11 @@ class _UploadState extends State<Upload> {
               backgroundImage:
                   CachedNetworkImageProvider(widget.currentUser!.photoUrl),
             ),
-            title: Container(
+            title: SizedBox(
               width: 250.0,
-              child: const TextField(
-                decoration: InputDecoration(
+              child: TextField(
+                controller: captionController,
+                decoration: const InputDecoration(
                   hintText: "Write a caption...",
                   border: InputBorder.none,
                 ),
@@ -161,10 +231,11 @@ class _UploadState extends State<Upload> {
               color: Colors.orange,
               size: 35.0,
             ),
-            title: Container(
+            title: SizedBox(
               width: 250.0,
-              child: const TextField(
-                decoration: InputDecoration(
+              child: TextField(
+                controller: locationController,
+                decoration: const InputDecoration(
                   hintText: "Where was this photo taken?",
                   border: InputBorder.none,
                 ),
@@ -178,7 +249,7 @@ class _UploadState extends State<Upload> {
             child: RaisedButton.icon(
               label: const Text(
                 "Use Current Location",
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white),
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
