@@ -128,11 +128,9 @@ class _HomeState extends State<Home> {
             onPressed: logout,
           ),
           Search(),
-          Upload(
-            currentUser: currentUser,
-          ),
+          Upload(currentUser: currentUser),
           ActivityFeed(),
-          Profile(),
+          Profile(profileId: currentUser?.id),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,

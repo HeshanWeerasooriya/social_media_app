@@ -1,13 +1,10 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-//import 'package:image/image.dart' as Im;
-//import 'package:image/image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:social_media_app/pages/home.dart';
