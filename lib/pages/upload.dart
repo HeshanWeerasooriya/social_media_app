@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 //import 'package:image/image.dart' as Im;
 //import 'package:image/image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,7 +27,7 @@ class _UploadState extends State<Upload> {
   final ImagePicker _picker = ImagePicker();
   TextEditingController captionController = TextEditingController();
   TextEditingController locationController = TextEditingController();
-  bool isUploading = true;
+  bool isUploading = false;
   String postId = const Uuid().v4();
 
   handleTakePhoto() async {
@@ -255,7 +257,7 @@ class _UploadState extends State<Upload> {
                 borderRadius: BorderRadius.circular(30.0),
               ),
               color: Colors.blue,
-              onPressed: () => print('get user location'),
+              onPressed: getUserLocation,
               icon: const Icon(
                 Icons.my_location,
                 color: Colors.white,
@@ -265,6 +267,22 @@ class _UploadState extends State<Upload> {
         ],
       ),
     );
+  }
+
+  getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    Placemark placemark = placemarks[0];
+    String completeAddress =
+        '${placemark.subThoroughfare} ${placemark.thoroughfare}, ${placemark.subLocality} ${placemark.locality}, ${placemark.subAdministrativeArea}, ${placemark.administrativeArea} ${placemark.postalCode}, ${placemark.country}';
+    print(completeAddress);
+    print('OOOOOOO');
+    String formattedAddress = "${placemark.locality}, ${placemark.country}";
+    locationController.text = formattedAddress;
   }
 
   @override
