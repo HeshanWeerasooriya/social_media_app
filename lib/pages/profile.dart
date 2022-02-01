@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../model/user.dart';
 import '../widgets/header.dart';
 import '../widgets/progress.dart';
+import 'edit_profile.dart';
 import 'home.dart';
 
 class Profile extends StatefulWidget {
@@ -15,6 +16,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final String? currentUserId = currentUser?.id;
   Column buildCountColumn(String label, int count) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -39,8 +41,30 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  editProfile() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditProfile(currentUserId: currentUserId),
+        ));
+  }
+
   buildProfileButton() {
-    return Text("profile button");
+    // viewing your own profile - should show edit profile button
+    bool isProfileOwner = currentUserId == widget.profileId;
+    if (isProfileOwner) {
+      // return buildButton(text: "Edit Profile", function: editProfile);
+      return ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditProfile(currentUserId: currentUserId),
+              ));
+        },
+        child: Text('Edit Profile'),
+      );
+    }
   }
 
   buildProfileHeader() {
