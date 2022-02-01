@@ -15,10 +15,13 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController displayNameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   bool isLoading = false;
   User? user;
+  bool _displayNameValid = true;
+  bool _bioValid = true;
 
   @override
   void initState() {
@@ -43,7 +46,7 @@ class _EditProfileState extends State<EditProfile> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
+        const Padding(
             padding: EdgeInsets.only(top: 12.0),
             child: Text(
               "Display Name",
@@ -53,6 +56,7 @@ class _EditProfileState extends State<EditProfile> {
           controller: displayNameController,
           decoration: InputDecoration(
             hintText: "Update Display Name",
+            errorText: _displayNameValid ? null : "Display Name too short",
           ),
         )
       ],
@@ -63,7 +67,7 @@ class _EditProfileState extends State<EditProfile> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
+        const Padding(
             padding: EdgeInsets.only(top: 12.0),
             child: Text(
               "Bio",
@@ -73,18 +77,45 @@ class _EditProfileState extends State<EditProfile> {
           controller: bioController,
           decoration: InputDecoration(
             hintText: "Update Bio",
+            errorText: _bioValid ? null : "Bio too long",
           ),
         )
       ],
     );
   }
 
+  updateProfileData() {
+    setState(() {
+      displayNameController.text.trim().length < 3 ||
+              displayNameController.text.isEmpty
+          ? _displayNameValid = false
+          : _displayNameValid = true;
+      bioController.text.trim().length > 100
+          ? _bioValid = false
+          : _bioValid = true;
+    });
+    if (_displayNameValid && _bioValid) {
+      usersRef.doc(widget.currentUserId).update({
+        "displayName": displayNameController.text,
+        "bio": bioController.text,
+      });
+      SnackBar snackbar = SnackBar(content: Text("Profile updated!"));
+      _scaffoldKey.currentState!.showSnackBar(snackbar);
+    }
+  }
+
+  logout() async {
+    await googleSignIn.signOut();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Edit Profile",
           style: TextStyle(
             color: Colors.black,
@@ -93,7 +124,7 @@ class _EditProfileState extends State<EditProfile> {
         actions: <Widget>[
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(
+            icon: const Icon(
               Icons.done,
               size: 30.0,
               color: Colors.green,
@@ -105,53 +136,52 @@ class _EditProfileState extends State<EditProfile> {
           ? circularProgress()
           : ListView(
               children: <Widget>[
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 16.0,
-                          bottom: 8.0,
-                        ),
-                        child: CircleAvatar(
-                          radius: 50.0,
-                          backgroundImage:
-                              CachedNetworkImageProvider(user!.photoUrl),
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 16.0,
+                        bottom: 8.0,
+                      ),
+                      child: CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage:
+                            CachedNetworkImageProvider(user!.photoUrl),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          buildDisplayNameField(),
+                          buildBioField(),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: updateProfileData,
+                      child: Text(
+                        "Update Profile",
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          children: <Widget>[
-                            buildDisplayNameField(),
-                            buildBioField(),
-                          ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton.icon(
+                        onPressed: logout,
+                        icon: const Icon(Icons.cancel, color: Colors.red),
+                        label: const Text(
+                          "Logout",
+                          style: const TextStyle(
+                              color: Colors.red, fontSize: 20.0),
                         ),
                       ),
-                      RaisedButton(
-                        onPressed: () => print('update profile data'),
-                        child: Text(
-                          "Update Profile",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: FlatButton.icon(
-                          onPressed: () => print('logout'),
-                          icon: Icon(Icons.cancel, color: Colors.red),
-                          label: Text(
-                            "Logout",
-                            style: TextStyle(color: Colors.red, fontSize: 20.0),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
