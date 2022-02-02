@@ -154,7 +154,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_active),
+              icon: Icon(Icons.favorite_border_sharp),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
