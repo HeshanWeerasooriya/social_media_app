@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import '../model/user.dart';
 import '../pages/home.dart';
 import 'custom_image.dart';
 import 'progress.dart';
+import 'package:animator/animator.dart';
 
 class Post extends StatefulWidget {
   final String postId;
@@ -76,6 +79,7 @@ class _PostState extends State<Post> {
   int likeCount;
   Map likes;
   late bool isLiked;
+  bool showHeart = false;
 
   _PostState({
     required this.postId,
@@ -128,6 +132,13 @@ class _PostState extends State<Post> {
         alignment: Alignment.center,
         children: <Widget>[
           cachedNetworkImage(mediaUrl),
+          showHeart
+              ? const Icon(
+                  Icons.favorite,
+                  size: 80.0,
+                  color: Colors.red,
+                )
+              : const Text(""),
         ],
       ),
     );
@@ -157,6 +168,12 @@ class _PostState extends State<Post> {
         likeCount += 1;
         isLiked = true;
         likes[currentUserId] = true;
+        showHeart = true;
+      });
+      Timer(const Duration(milliseconds: 500), () {
+        setState(() {
+          showHeart = false;
+        });
       });
     }
   }
