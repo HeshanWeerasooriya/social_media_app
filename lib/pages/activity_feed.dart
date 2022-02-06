@@ -5,6 +5,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../widgets/header.dart';
 import '../widgets/progress.dart';
 import 'home.dart';
+import 'post_screen.dart';
 
 class ActivityFeed extends StatefulWidget {
   @override
@@ -84,10 +85,22 @@ class ActivityFeedItem extends StatelessWidget {
     );
   }
 
-  configureMediaPreview() {
+  showPost(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PostScreen(
+          postId: postId,
+          userId: userId,
+        ),
+      ),
+    );
+  }
+
+  configureMediaPreview(context) {
     if (type == "like" || type == 'comment') {
       mediaPreview = GestureDetector(
-        onTap: () => print('showing post'),
+        onTap: () => showPost(context),
         child: Container(
           height: 50.0,
           width: 50.0,
@@ -120,7 +133,7 @@ class ActivityFeedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    configureMediaPreview();
+    configureMediaPreview(context);
 
     return Padding(
       padding: EdgeInsets.only(bottom: 2.0),
