@@ -6,6 +6,7 @@ import '../widgets/header.dart';
 import '../widgets/progress.dart';
 import 'home.dart';
 import 'post_screen.dart';
+import 'profile.dart';
 
 class ActivityFeed extends StatefulWidget {
   @override
@@ -141,7 +142,7 @@ class ActivityFeedItem extends StatelessWidget {
         color: Colors.white54,
         child: ListTile(
           title: GestureDetector(
-            onTap: () => print('show profile'),
+            onTap: () => showProfile(context, profileId: userId),
             child: RichText(
               overflow: TextOverflow.ellipsis,
               text: TextSpan(
@@ -172,4 +173,15 @@ class ActivityFeedItem extends StatelessWidget {
       ),
     );
   }
+}
+
+showProfile(BuildContext context, {required String profileId}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => Profile(
+        profileId: profileId,
+      ),
+    ),
+  );
 }

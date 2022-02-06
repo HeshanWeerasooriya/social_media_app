@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../model/user.dart';
 import '../widgets/progress.dart';
+import 'activity_feed.dart';
 import 'home.dart';
 
 class Search extends StatefulWidget {
@@ -122,7 +123,7 @@ class UserResult extends StatelessWidget {
       child: Column(
         children: <Widget>[
           GestureDetector(
-            onTap: () => print('tapped'),
+            onTap: () => showProfile(context, profileId: user.id),
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.grey,

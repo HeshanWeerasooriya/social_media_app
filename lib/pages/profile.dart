@@ -93,6 +93,8 @@ class _ProfileState extends State<Profile> {
         },
         child: const Text('Edit Profile'),
       );
+    } else {
+      return Text('button');
     }
   }
 
