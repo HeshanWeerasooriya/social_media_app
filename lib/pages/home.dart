@@ -16,6 +16,7 @@ final usersRef = FirebaseFirestore.instance.collection('users');
 final DateTime timestamp = DateTime.now();
 final postsRef = FirebaseFirestore.instance.collection('posts');
 final commentsRef = FirebaseFirestore.instance.collection('comments');
+final activityFeedRef = FirebaseFirestore.instance.collection('feed');
 
 User? currentUser;
 
