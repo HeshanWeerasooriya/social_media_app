@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_app/pages/profile.dart';
 import '../model/user.dart';
 import '../widgets/progress.dart';
 import 'activity_feed.dart';
 import 'home.dart';
 
 class Search extends StatefulWidget {
+  const Search({Key? key}) : super(key: key);
+
   @override
   _SearchState createState() => _SearchState();
 }
@@ -123,7 +126,38 @@ class UserResult extends StatelessWidget {
       child: Column(
         children: <Widget>[
           GestureDetector(
-            onTap: () => showProfile(context, profileId: user.id),
+            onTap:
+                //           Future.delayed(Duration.zero,(){
+                //   Navigator.push(
+                //               context,
+                //               MaterialPageRoute(
+                //                   builder: (context) => Profile(profileId: user.id)),
+                //             );
+                // });
+
+                // () async {
+                //   await Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => Profile(profileId: user.id)),
+                //   );
+                // },
+                //showProfile(BuildContext context, {required String profileId}) {
+                //           Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (context) => Profile(
+                //               profileId: profileId,
+                //             ),
+                //           ),
+                //         );
+                //       }
+
+//Navigator.push(context, MaterialPageRoute(builder: (context => P))),
+
+                () => Future.delayed(Duration.zero, () {
+              showProfile(context, profileId: user.id);
+            }),
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.grey,
